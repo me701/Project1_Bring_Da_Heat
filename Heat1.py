@@ -33,7 +33,7 @@ def sumr(a):
 
 def Heat_1D_Derivation(c, L, t, T1, T2, fun = lambda x: 100):
     """
-    This function will contain all the sympy stuff to explain the 1D heat equation and will probably solve at a single value of x?
+    This function will contain all the sympy stuff to explain the 1D heat equation and will maybe solve at a single value of x?
     """
 
 def b_n(x, L, T1, T2, n, fun = lambda x: 100 ):
@@ -154,3 +154,27 @@ def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
         Sol1.append(sol1)
         Sol2.append(sol2)
         Sol3.append(sol3)
+        #add 2D plots, need to figure out how we want to do 3D plots, might be best to just have a preset set of data to plot
+        
+#%% 3D plot example
+import numpy as np
+def f(x, y):
+    return np.sin(np.sqrt(x ** 2 + y ** 2))
+
+x = np.linspace(-6, 6, 30)
+y = np.linspace(-6, 6, 30)
+
+X, Y = np.meshgrid(x, y)
+Z = f(X, Y)
+
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+ax.contour3D(X, Y, Z, 50, cmap='plasma')
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z');
+ax.view_init(60, 35) #sets view angle
+
+#ax.annotate('local max', xy=(2, 1), xytext=(3, 1.5),
+#            arrowprops=dict(facecolor='black', shrink=0.05),
+#           ) #this code shows how to annotate a graph 
