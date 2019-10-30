@@ -9,8 +9,14 @@ T-Ying Lin
 Brandon Yutzy
 """
 
+"""""""""""
+  NOTE: If running in an IDE: go to tools, prefrences, iPython console, and then grahpics.
+  Find graphics backend and switch to automatic in order to get best results with plots.
+"""""""""""
+
 import sympy as sy #run conda install sympy if you do not have enabled
 import scipy as sp
+from scipy import integrate
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 from scipy import pi
@@ -30,6 +36,29 @@ def Heat_1D_Derivation(c, L, t, T1, T2, fun = lambda x: 100):
     This function will contain all the sympy stuff to explain the 1D heat equation and will probably solve at a single value of x?
     """
 
+def b_n(x, L, T1, T2, n, fun = lambda x: 100 ):
+        """
+        This function is used to calculate the fourier 
+        coefficient b_n of the 1D heat equation:
+            b_n = 2/L * integral((f(x) - u_1)*sin(n*pi*x/l)dx) evaluated from 0 to L
+        
+        Inputs:
+            x: the position of interest and the variable of integration
+                        
+            L: the length of the member
+        
+            T1: boundary condition: u(0,t) = T1
+        
+            T2: boundary condition: u(L,t) = T2
+                                   
+            n: the iteration
+            
+            fun: boundary condition: u(x,0) = f(x
+                
+        b_n to be called with Heat_1D and ..... 
+        """
+        return (2/L)*(fun(x) - (x*(T1 - T2)/L + T1))*sp.sin(x*n*pi/L) 
+    
 def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
     """
     This function gives the solution to the 1D heat equation:
@@ -77,12 +106,14 @@ def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
         
         for n in range(1,N1+1):
             lam1 = c*n*pi/L
-     
-            b1_n = 0 #use scipy.integrate if possible, n makes it weird unless you hard code 
+            
+            u1_1 = (T2-T1)*x/L + T1 #this is steady state, time independent solution.
+            
+            b1_n = integrate.quad(b_n,0, L, args=(L,T1,T2,n,fun,) )[0]
     
             u1_2 = b1_n*sp.exp(-lam1**2*t)*sp.sin(n*pi*x/L)
             
-            u1_1 = (T2-T1)*x/L + T1 #this is steady state, time independent solution.
+            
             
             u1 = u1_1 + u1_2
             sn1.append(u1)
@@ -90,11 +121,13 @@ def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
         for n in range(1,N2+1):
             lam2 = c*n*pi/L
      
-            b2_n = 0 #use scipy.integrate if possible, n makes it weird unless you hard code 
+            u2_1 = (T2-T1)*x/L + T1 #this is steady state, time independent solution.
+        
+            b2_n = integrate.quad(b_n,0, L, args=(L,T1,T2,n,fun,) )[0]
     
             u2_2 = b2_n*sp.exp(-lam2**2*t)*sp.sin(n*pi*x/L)
             
-            u2_1 = (T2-T1)*x/L + T1 #this is steady state, time independent solution.
+            
             
             u2 = u2_1 + u2_2
             sn2.append(u2)
@@ -102,11 +135,13 @@ def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
         for n in range(1,N3+1):
             lam3 = c*n*pi/L
      
-            b3_n = 0 #use scipy.integrate if possible, n makes it weird unless you hard code 
+            u3_1 = (T2-T1)*x/L + T1 #this is steady state, time independent solution.
+        
+            b3_n = integrate.quad(b_n,0, L, args=(L,T1,T2,n,fun,) )[0] 
     
             u3_2 = b3_n*sp.exp(-lam3**2*t)*sp.sin(n*pi*x/L)
             
-            u3_1 = (T2-T1)*x/L + T1 #this is steady state, time independent solution.
+            
             
             u3 = u3_1 + u3_2
             sn3.append(u3)
