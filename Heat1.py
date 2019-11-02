@@ -14,13 +14,12 @@ Brandon Yutzy
   Find graphics backend and switch to automatic inorder to get best results with plots.
 """""""""""
 
-import sympy as sy #run conda install sympy if you do not have enabled
 import scipy as sp
 from scipy import integrate
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 from scipy import pi
-
+#%%
 
 def sumr(a):
     """
@@ -30,7 +29,7 @@ def sumr(a):
         return sum(a)
     else:
         return sumr(a[:len(a)//2]) + sumr(a[len(a)//2:])
-    
+#%% 
 
 
 
@@ -57,7 +56,7 @@ def b_n(x, L, T1, T2, n, fun = lambda x: 100 ):
         b_n to be called with Heat_1D and ..... 
         """
         return (2/L)*(fun(x) - (x*(T2 - T1)/L + T1))*sp.sin(x*n*pi/L) 
-        
+#%%     
 def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
     """
     This function gives the solution to the 1D heat equation:
@@ -65,6 +64,9 @@ def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
     Evaluated at multiple times and positions.
     The function only considers members with no internal heat sources. The bar is
     assumed to be homogeneous, made of a single material.
+    
+    This function's resolution is not very fine, it you want better resolution use
+    single_heat as it will be evaluated at a single position and time.
     
     Inputs:
         c: the diffusivity, k/(s*rho)
@@ -175,7 +177,7 @@ def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
     
     return Sol1,Sol2,Sol3,X,T
         
-
+#%%
 def Heat_plot2D(H,x,t):
     """
     This function makes 2D plots of the solution of the heat equation evaluated
@@ -204,12 +206,31 @@ def Heat_plot2D(H,x,t):
             x = Sol[-2]
             
             t = Sol[-1]
+            
+        However, for single plots you will need to be a little more vigilant on how you define H.
+            ex:
+                H = [Heat_1D out[0][2],Heat_1D out[1][2],Heat_1D out[2][2]]
+                
+            is how you would define H for a given t value.
     """
     
     import matplotlib.pyplot as plt
     import scipy as sp
         
-    if len(t) > 1:
+    if (isinstance(t,sp.ndarray) and len(t)==1) or type(t)==int or type(t)==float or type(t)==sp.float64:
+        fig = plt.figure()
+        plt.clf()
+        title = 'Temperature at Time: ' + str(t)
+        plt.plot(x,H[0],'r--',label = 'N = 10')
+        plt.plot(x,H[1],'b:',label = 'N = 30')
+        plt.plot(x,H[2],'g-',label = 'N = 80')
+        plt.xlabel('Position')
+        plt.ylabel('Temperature')
+        plt.legend(loc=0)
+        plt.title(title)
+        plt.show()
+    
+    elif len(t) > 1:
         for i in range(len(t)):
             fig = plt.figure(i)
             plt.clf()
@@ -237,7 +258,16 @@ def Heat_plot2D(H,x,t):
         plt.legend(loc=0)
         plt.title(title)
         plt.show()
-    
+#%%
+def Generate_bar(L,T1,T2,fun=lambda x: 100):        
+    pass
+#%%
+def Heat_timeplot(someargs):
+    pass
+#%%
+def Heat_plot3D(someargs):
+    pass
+#%% 
 def single_heat(c, L, x, t, T1, T2, fun = lambda x: 100):
     """
     This function gives the solution to the 1D heat equation:
@@ -291,11 +321,13 @@ def single_heat(c, L, x, t, T1, T2, fun = lambda x: 100):
             
     return sol,x,t
 
-#K=Heat_1D(1,pi,1,0,0)
-#H = K[:3]
-#x = K[-2]
-#t = K[-1]
-#Heat_plot2D(H,x,t)
+#%% An example output
+K=Heat_1D(1,pi,1,0,0)
+H = K[:3]
+x = K[-2]
+t = K[-1]
+
+Heat_plot2D(H,x,t)
 
 
 #%% 3D plot example
