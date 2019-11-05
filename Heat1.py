@@ -178,7 +178,7 @@ def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
     return Sol1,Sol2,Sol3,X,T
         
 #%%
-def Heat_plot2D(H,x,t):
+def Heat_plot2D(H,x,t, keep=False, show=False):
     """
     This function makes 2D plots of the solution of the heat equation evaluated
     some times t. The idea is that this will be used in with the output of Heat_1D.
@@ -193,6 +193,10 @@ def Heat_plot2D(H,x,t):
         
         t: the times you want to visualize the solution at, you probably do not
         want a lot of time values at once.
+        
+        keep: set True if you would like to save figures
+        
+        show: set True if you would like a window to pop up, really only has effect in commandline
         
     Note: 
         The output of Heat_1D contains the x and t values used in the calculations,
@@ -214,8 +218,7 @@ def Heat_plot2D(H,x,t):
             is how you would define H for a given t value.
     """
     
-    import matplotlib.pyplot as plt
-    import scipy as sp
+  
         
     if (isinstance(t,sp.ndarray) and len(t)==1) or type(t)==int or type(t)==float or type(t)==sp.float64:
         fig = plt.figure()
@@ -228,9 +231,13 @@ def Heat_plot2D(H,x,t):
         plt.ylabel('Temperature')
         plt.legend(loc=0)
         plt.title(title)
-        plt.show()
+        if keep :
+            plt.savefig('Solution_plot', format ='png')
+        if show :
+            plt.show()
+        
     
-    elif len(t) > 1:
+    elif len(t) > 1: #sorry for very repetitive code Richard/Roberts, did it this way and then did'nt want  to make function...
         for i in range(len(t)):
             fig = plt.figure(i)
             plt.clf()
@@ -242,7 +249,12 @@ def Heat_plot2D(H,x,t):
             plt.ylabel('Temperature')
             plt.legend(loc=0)
             plt.title(title)
-        plt.show()
+            if keep:
+                fn = 'Solution_plot_' + str(i)
+                fn = 'Solution_plot_{}.png'.format(i)
+                plt.savefig(fn)
+            if show :
+                plt.show()
 
     
         
@@ -257,7 +269,10 @@ def Heat_plot2D(H,x,t):
         plt.ylabel('Temperature')
         plt.legend(loc=0)
         plt.title(title)
-        plt.show()
+        if keep :
+            plt.savefig('Solution_plot',format='png')
+        if show :
+            plt.show()
 #%%
 def Generate_bar(L,T1,T2,fun=lambda x: 100):        
     pass
@@ -326,8 +341,8 @@ K=Heat_1D(1,pi,1,0,0)
 H = K[:3]
 x = K[-2]
 t = K[-1]
-
-Heat_plot2D(H,x,t)
+#%%
+Heat_plot2D(H,x,t, show=True, keep = True)
 
 
 #%% 3D plot example
