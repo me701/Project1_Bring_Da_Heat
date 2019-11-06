@@ -17,6 +17,7 @@ Brandon Yutzy
 import scipy as sp
 from scipy import integrate
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 from mpl_toolkits import mplot3d
 from scipy import pi
 #%%
@@ -260,7 +261,20 @@ def Heat_plot2D(H,x,t):
         plt.show()
 #%%
 def Generate_bar(L,T1,T2,fun=lambda x: 100):        
-    pass
+    fig, ax = plt.subplots(1)
+    ax.axis('off')
+    rect = patches.Rectangle((5,5), L, 2.5, linewidth=1, fill = False)
+    ax.add_patch(rect)
+    ax.margins(.2,5)
+    ax.annotate('T1 = ' + str(T1), xy=(5, 5), xytext=(3, 1.5),
+            arrowprops=dict(facecolor='black', shrink=0.05))
+    ax.annotate('T2 = ' + str(T2), xy=(5+L,5), xytext=(7+L,1.5), 
+                arrowprops=dict(facecolor='black', shrink=0.05))
+    ax.annotate('Length = ' + str(L), xy=(L+5, 9), xytext=(-7, 8.5),
+                arrowprops=dict(arrowstyle='<->'))
+    ax.annotate('u(0,t)={}'.format(fun(x)), xy=(L/2, 7.5), xytext=(L/2, 10),
+                arrowprops=dict(shrink=0.05)) 
+    plt.show()
 #%%
 def Heat_timeplot(someargs):
     pass
@@ -349,6 +363,3 @@ ax.set_ylabel('y')
 ax.set_zlabel('z');
 ax.view_init(60, 35) #sets view angle
 
-#ax.annotate('local max', xy=(2, 1), xytext=(3, 1.5),
-#            arrowprops=dict(facecolor='black', shrink=0.05),
-#           ) #this code shows how to annotate a graph 
