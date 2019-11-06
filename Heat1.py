@@ -128,7 +128,9 @@ def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
             
             
                 u1 = u1_1 + u1_2
-                sn1.append(u1)
+                sn1.append(u1) # i think if i had been a little more clever and 
+                #had a bit more time i could have made a subfunction so i would
+                #not be doing the same calculation 3 times. Use an appropriate bound conditions on for loop as well
         
             for n in range(1,N2+1):# these itterate the n values within the series
                 lam2 = c*n*pi/L
