@@ -277,20 +277,21 @@ def Heat_plot2D(H,x,t, keep=False, show=False):
         if show :
             plt.show()
 #%%
-def Generate_bar(L,T1,T2,fun=lambda x: 100):        
+def Generate_bar(L,T1,T2,fun=lambda x: 100):
+    val = input("Please input the function you have used: ")    
     fig, ax = plt.subplots(1)
     ax.axis('off')
-    rect = patches.Rectangle((5,5), L, 2.5, linewidth=1, fill = False)
+    rect = patches.Rectangle((5,5), 100, 2.5, linewidth=1, fill = False)
     ax.add_patch(rect)
     ax.margins(.2,5)
     ax.annotate('T1 = ' + str(T1), xy=(5, 5), xytext=(3, 1.5),
             arrowprops=dict(facecolor='black', shrink=0.05))
-    ax.annotate('T2 = ' + str(T2), xy=(5+L,5), xytext=(7+L,1.5), 
+    ax.annotate('T2 = ' + str(T2), xy=(105,5), xytext=(107,1.5), 
                 arrowprops=dict(facecolor='black', shrink=0.05))
-    ax.annotate('Length = ' + str(L), xy=(L+5, 9), xytext=(-7, 8.5),
+    ax.annotate('Length = ' + str(L), xy=(105, 9), xytext=(-7, 8.5),
                 arrowprops=dict(arrowstyle='<->'))
-    ax.annotate('u(0,t)={}'.format(fun(x)), xy=(L/2, 7.5), xytext=(L/2, 10),
-                arrowprops=dict(shrink=0.05)) 
+    ax.annotate('u(0,t)={}'.format(str(val)), xy=(50, 7.5), xytext=(50, 10),
+                arrowprops=dict(facecolor='black', shrink=0.05)) 
     plt.show()
 #%%
 def Heat_timeplot(someargs):
