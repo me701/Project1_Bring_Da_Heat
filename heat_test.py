@@ -29,13 +29,16 @@ class TestHeat(unittest.TestCase):
         self.assertAlmostEqual(bfound, bgiven, places=4)
         
     def test_DHeat(self):
-        xg = 2.27586 #20
-        hfound1 = Heat_1D(self.c, self.L, self.t, self.T1, self.T2, self.fun)[]
-        expr = np.exp(-(2 * self.k + 1)**2 * self.t / ((2 * self.k) + self.t )) * np.sin((2 * self.k) + 1) * xg
+        x = 2.27586 #20
+        hfound = Heat_1D(self.c, self.L, self.t, self.T1, self.T2, self.fun)[0][4][20]
+        i = 0
+        expr = 0
+        while i<=self.k:
+            f = (2 * i) + 1
+            expr = expr + (np.exp(-(f**2 * self.t)) / f * np.sin(f) * x)
+            i +=1
         hgiven = 400 / np.pi * expr
-        print(hfound1)
-        print(hgiven)
-        self.assertAlmostEqual(hfound1, hgiven, places=4)
+        self.assertAlmostEqual(hfound, hgiven, places=4)
         
 if __name__ == '__main__':
     unittest.main()
