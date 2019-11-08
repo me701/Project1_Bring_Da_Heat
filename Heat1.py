@@ -181,7 +181,7 @@ def Heat_1D(c, L, t, T1, T2, fun = lambda x: 100):
     return Sol1,Sol2,Sol3,X,T
         
 #%%
-def Heat_plot2D(H,x,t, keep=False, show=False):
+def Heat_plot2D(H, x, t, keep=False, show=False):
     """
     This function makes 2D plots of the solution of the heat equation evaluated
     some times t. The idea is that this will be used in with the output of Heat_1D.
@@ -303,17 +303,43 @@ def Generate_bar(L,T1,T2,fun=lambda x: 100):
 def Heat_timeplot(someargs):
     pass
 #%%
-def Heat_plot3D(H, x, t):
+def Heat_plot3D(H, x, t, keep=False, show=False, colormap='plasma'):
+    """
+    This function creates a 3D plot of the 1D heat solution.
+    
+    Inputs:
+        H: the solution, choose one of the three outputted solutions. This is a
+        choice between which upperbound you would like to see. WARNING! only 
+        give one  of the three solutions
+        
+        x: the positional output of Heat_1D
+        
+        t: the time interval you wish to see graphed. WARNING! time cannot exceed
+        that of what was inputted to Heat_1D and the step size value must match
+        the output as well. i.e. you can enter a t value less than what was inputted
+        but it must be a t value that Heat_1D was evaluated at.
+        
+        ex: t = outputted t [:-1]
+    """
     X1, Y1 = np.meshgrid(x,t)
-    Z1 = np.array([H[0][0],H[0][1],H[0][2],H[0][3],H[0][4]])
+    z = []
+    for i in range(len(t)):
+        z.append(H[i]) #this is allowed and done because you are giving one of the solutions and not all three
+    
+    Z1 = np.array(z)
     fig = plt.figure()
     ax = plt.axes(projection='3d')
-    ax.contour3D(X1, Y1, Z1, 50, cmap='plasma')
-    ax.set_xlabel('Length of Bar')
-    ax.set_ylabel('t')
+    ax.contour3D(X1, Y1, Z1, 50, cmap=colormap)
+    ax.set_xlabel('Position')
+    ax.set_ylabel('Time')
     ax.set_zlabel('Temperature');
     ax.view_init(60, 35) #sets view angle
-    plt.show()
+    
+    if keep :
+        plt.savefig('3D_Heat_Plot', format ='png')
+    
+    if show :
+        plt.show()
 #%% 
 def single_heat(c, L, x, t, T1, T2, fun = lambda x: 100):
     """
@@ -373,27 +399,10 @@ K=Heat_1D(1,pi,1,0,0)
 H = K[:3]
 x = K[-2]
 t = K[-1]
-#%%
-Heat_plot2D(H,x,t, show=True, keep = True)
-a, b, c = Heat_plot3D(H,x,t)
 
+#%% Plot example
+Heat_plot2D(H,x,t, show=True)
+h = H[-1]
+Heat_plot3D(h,x,t, show=True)
 
-#%% 3D plot example
-import numpy as np
-def f(x, y):
-    return np.sin(np.sqrt(x ** 2 + y ** 2))
-
-x = np.linspace(-6, 6, 30)
-y = np.linspace(-6, 6, 30)
-
-X, Y = np.meshgrid(x, y)
-Z = f(X, Y)
-
-fig = plt.figure()
-ax = plt.axes(projection='3d')
-ax.contour3D(X, Y, Z, 50, cmap='plasma')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-ax.set_zlabel('z');
-ax.view_init(60, 35) #sets view angle
 
