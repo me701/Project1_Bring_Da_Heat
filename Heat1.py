@@ -13,7 +13,7 @@ Brandon Yutzy
   NOTE: If running in an IDE: go to tools, preferences, iPython console, and then graphics.
   Find graphics backend and switch to automatic inorder to get best results with plots.
 """""""""""
-
+import numpy as np
 import scipy as sp
 from scipy import integrate
 import matplotlib.pyplot as plt
@@ -276,17 +276,23 @@ def Heat_plot2D(H,x,t, keep=False, show=False):
             plt.show()
 #%%
 def Generate_bar(L,T1,T2,fun=lambda x: 100):
-    val = input("Please input the function you have used: ")    
+    """
+    Function to generate informational graphic depicting functions used, 
+    starting temperatures at either end, and length of the bar. 
+    """
+    val = input("Please input the function you have used: ")   #To produce an easy way of identifying the function used.  
+    #Configuring table to be visually appealing. 
     fig, ax = plt.subplots(1)
     ax.axis('off')
     rect = patches.Rectangle((5,5), 100, 2.5, linewidth=1, fill = False)
     ax.add_patch(rect)
     ax.margins(.2,5)
-    ax.annotate('T1 = ' + str(T1), xy=(5, 5), xytext=(3, 1.5),
+    #Adding labels for temperature, length, and function. 
+    ax.annotate('T1 = {0:.3f}'.format(T1), xy=(5, 5), xytext=(3, 1.5),
             arrowprops=dict(facecolor='black', shrink=0.05))
-    ax.annotate('T2 = ' + str(T2), xy=(105,5), xytext=(107,1.5), 
+    ax.annotate('T2 = {0:.3f}'.format(T2), xy=(105,5), xytext=(107,1.5), 
                 arrowprops=dict(facecolor='black', shrink=0.05))
-    ax.annotate('Length = ' + str(L), xy=(105, 9), xytext=(-7, 8.5),
+    ax.annotate('Length = {0:.3f}'.format(L), xy=(105, 9), xytext=(-7, 8.5),
                 arrowprops=dict(arrowstyle='<->'))
     ax.annotate('u(0,t)={}'.format(str(val)), xy=(50, 7.5), xytext=(50, 10),
                 arrowprops=dict(facecolor='black', shrink=0.05)) 
@@ -295,8 +301,17 @@ def Generate_bar(L,T1,T2,fun=lambda x: 100):
 def Heat_timeplot(someargs):
     pass
 #%%
-def Heat_plot3D(someargs):
-    pass
+def Heat_plot3D(H, x, t):
+    X1, Y1 = np.meshgrid(x,t)
+    Z1 = np.array([H[0][0],H[0][1],H[0][2],H[0][3],H[0][4]])
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
+    ax.contour3D(X1, Y1, Z1, 50, cmap='plasma')
+    ax.set_xlabel('Length of Bar')
+    ax.set_ylabel('t')
+    ax.set_zlabel('Temperature');
+    ax.view_init(60, 35) #sets view angle
+    plt.show()
 #%% 
 def single_heat(c, L, x, t, T1, T2, fun = lambda x: 100):
     """
@@ -358,6 +373,7 @@ x = K[-2]
 t = K[-1]
 #%%
 Heat_plot2D(H,x,t, show=True, keep = True)
+a, b, c = Heat_plot3D(H,x,t)
 
 
 #%% 3D plot example
