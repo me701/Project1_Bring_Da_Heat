@@ -359,9 +359,10 @@ H = K[:3]
 x = K[-2]
 t = K[-1]
 #%%
-Heat_plot2D(H,x,t, show=True, keep = True)
+Heat_plot2D(H,x,t, show=True)
 
-
+#%%
+Generate_bar(pi,0,0)
 #%% 3D plot example
 import numpy as np
 def f(x, y):
