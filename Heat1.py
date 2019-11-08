@@ -403,6 +403,6 @@ t = K[-1]
 #%% Plot example
 Heat_plot2D(H,x,t, show=True)
 h = H[-1]
-Heat_plot3D(h,x,t, show=True)
+Heat_plot3D(h,x,t,show=True)
 
 
