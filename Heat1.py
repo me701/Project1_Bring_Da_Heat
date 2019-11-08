@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from mpl_toolkits import mplot3d
 from scipy import pi
+import matplotlib.animation as animation
 #%%
 
 def sumr(a):
@@ -300,8 +301,30 @@ def Generate_bar(L,T1,T2,fun=lambda x: 100):
                 arrowprops=dict(facecolor='black', shrink=0.05)) 
     plt.show()
 #%%
-def Heat_timeplot(someargs):
-    pass
+def Heat_timeplot(K, show=True):
+    """
+    Creates an animation of the distrubution of the temperature over the length
+    that changes over time    
+    """
+    
+    data = K[0]
+    x = K[3]
+    fig = plt.figure()
+
+    im = []
+    for i in range(len(data)):
+        plot, = plt.plot(x, data[i],'b-')
+        im.append((plot,))
+        plt.xlabel('x')
+        plt.ylabel('T')     
+    
+    # Each plot is now a frame in the image
+    ani = animation.ArtistAnimation(fig, im, interval=100, blit=True)
+    # Save the figure 
+    ani.save('name.mp4', writer='ffmpeg')
+    # Show the outcome
+    plt.show()
+    
 #%%
 def Heat_plot3D(H, x, t, keep=False, show=False, colormap='plasma'):
     """
@@ -404,5 +427,6 @@ t = K[-1]
 Heat_plot2D(H,x,t, show=True)
 h = H[-1]
 Heat_plot3D(h,x,t,show=True)
+Heat_timeplot(K, show=True)
 
 
