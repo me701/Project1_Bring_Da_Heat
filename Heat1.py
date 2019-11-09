@@ -241,7 +241,7 @@ def Heat_plot2D(H, x, t, keep=False, show=False):
             plt.show()
         
     
-    elif len(t) > 1: #sorry for very repetitive code Richard/Roberts, did it this way and then did'nt want  to make function...
+    elif len(t) > 1: #sorry for very repetitive code Richard/Roberts, did it this way and then didn't want  to make function...
         for i in range(len(t)):
             fig = plt.figure(i)
             plt.clf()
@@ -278,7 +278,7 @@ def Heat_plot2D(H, x, t, keep=False, show=False):
         if show :
             plt.show()
 #%%
-def Generate_bar(L,T1,T2,fun=lambda x: 100):
+def Generate_bar(L,T1,T2,fun=lambda x: 100, keep=False):
     """
     Function to generate informational graphic depicting functions used, 
     starting temperatures at either end, and length of the bar. 
@@ -297,34 +297,43 @@ def Generate_bar(L,T1,T2,fun=lambda x: 100):
                 arrowprops=dict(facecolor='black', shrink=0.05))
     ax.annotate('Length = {0:.3f}'.format(L), xy=(105, 9), xytext=(-7, 8.5),
                 arrowprops=dict(arrowstyle='<->'))
-    ax.annotate('u(0,t)={}'.format(str(val)), xy=(50, 7.5), xytext=(50, 10),
+    ax.annotate('u(x,0)={}'.format(str(val)), xy=(50, 7.5), xytext=(50, 10),
                 arrowprops=dict(facecolor='black', shrink=0.05)) 
+    if keep:
+        plt.savefig("Bar",format='png')
     plt.show()
 #%%
-def Heat_timeplot(K, show=True):
+def Heat_timeplot(h,x, keep=False,show=True):
     """
     Creates an animation of the distrubution of the temperature over the length
     that changes over time    
+    
+    Inputs: 
+        h: one of the solutions outputted from Heat_1D
+        
+        x: the poistional output of Heat_1D
     """
     
-    data = K[0]
-    x = K[3]
+    data = h
+    
     fig = plt.figure()
 
     im = []
     for i in range(len(data)):
         plot, = plt.plot(x, data[i],'b-')
         im.append((plot,))
-        plt.xlabel('x')
-        plt.ylabel('T')     
-    
+        plt.xlabel('Position')
+        plt.ylabel('Temperature')
+        plt.title('Animated Temperature')
     # Each plot is now a frame in the image
-    ani = animation.ArtistAnimation(fig, im, interval=100, blit=True)
+    ani = animation.ArtistAnimation(fig, im, interval=200, blit=True)
     # Save the figure 
-    ani.save('name.mp4', writer='ffmpeg')
+    if keep:
+        ani.save('Temperature.mp4', writer='ffmpeg')
     # Show the outcome
-    plt.show()
-    
+    if show:
+        plt.show() #should work for commandline
+
 #%%
 def Heat_plot3D(H, x, t, keep=False, show=False, colormap='plasma'):
     """
@@ -359,7 +368,7 @@ def Heat_plot3D(H, x, t, keep=False, show=False, colormap='plasma'):
     ax.view_init(60, 35) #sets view angle
     
     if keep :
-        plt.savefig('3D_Heat_Plot', format ='png')
+        plt.savefig('3D_Heat_Plot', format ='png') #open this using the folder GUI not gedit
     
     if show :
         plt.show()
@@ -423,10 +432,14 @@ H = K[:3]
 x = K[-2]
 t = K[-1]
 
-#%% Plot example
+#%% Plot examples
 Heat_plot2D(H,x,t, show=True)
 h = H[-1]
-Heat_plot3D(h,x,t,show=True)
-Heat_timeplot(K, show=True)
+#%%
+Heat_plot3D(h,x,t, show=True)
+#%%
+Heat_timeplot(h,x, keep=True,show=True)
+#%%
+Generate_bar(pi,0,0,keep=True)
 
 
