@@ -395,7 +395,7 @@ def single_heat(c, L, x, t, T1, T2, fun = lambda x: 100):
     return sol,x,t
 
 #%% An example output
-K=Heat_1D(1,pi,1,0,0)
+K=Heat_1D(1,pi,1,0,100)
 H = K[:3]
 x = K[-2]
 t = K[-1]
@@ -403,6 +403,6 @@ t = K[-1]
 #%% Plot example
 Heat_plot2D(H,x,t, show=True)
 h = H[-1]
-Heat_plot3D(h,x,t,show=True)
+Heat_plot3D(h,x,t, show =True)
 
 
